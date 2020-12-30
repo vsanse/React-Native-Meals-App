@@ -1,9 +1,13 @@
 import React from "react";
 import { FlatList, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import MealItem from "./MealItem";
 
 export default function MealList({ data, navigation }) {
+  const favMeals = useSelector((state) => state.meals.favMeals);
+
   const renderMealItem = (itemData) => {
+    const isFavorite = favMeals.some((meal) => meal.id === itemData.item.id);
     return (
       <MealItem
         meal={itemData.item}
@@ -12,6 +16,8 @@ export default function MealList({ data, navigation }) {
             routeName: "MealDetails",
             params: {
               mealId: itemData.item.id,
+              mealTitle: itemData.item.title,
+              isFavorite: isFavorite,
             },
           });
         }}
